@@ -1,0 +1,8 @@
+升级至Windows 12 由Idiot Fuck公司开发（以下简称IdFut），此应用可以使当前系统升级到Windows 12 Profession。
+IdFut坚持将所有Windows升级至Windows 12(或更高版本)！！！
+一、
+如安装失败与IdFut无关，请检查系统是否不是Windows系统，如果是请检查是否低于IdFut规定的版本
+(版本为：Windows 12 Insider Preview 29555.666或更高版本才能更新Windows 12)
+二、
+如果安装成功，请卸载“升级到Windows 12.exe或main.exe”程序，因为它们并不与Windows 12相兼容。
+或者下载Windows 12_Running.dll文件并且放置到C:\Windows目录下

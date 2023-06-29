@@ -1,0 +1,7 @@
+请打开“H:/Projects/App/Setting Files” 如果没有找到其中的任何一项或多个文件(夹)，请新建。
+打开后新建：End_Sleep_Time.App-Setting 文件即可。  *
+*：您可以打开此文件，在里面输入退出程序输出本次运行时间后的停止时间(输入的必须为整数。否则程序将启动保护措施**)
+**:本文中的保护措施指的是将“End_Sleep_Time.App-Setting”中的内容修改为“5”
+
+请打开“H:/Projects/App/Setting Files” 如果没有找到其中的任何一项或多个文件(夹)，请新建。
+打开后新建：FirstRun.App-Settings 文件即可
