@@ -206,7 +206,7 @@ END""")
                     elif win < lose:
                         state = '输'
                     try:
-                        GuessFist_file = open('H:\Projects\App\GuessFist\GuessFist.txt', 'a')
+                        GuessFist_file = open('H:/Projects/App/GuessFist/GuessFist.txt', 'a')
                     except FileNotFoundError:
                         box.showerror('保存失败', '没有找到文件。')
                     else:
@@ -391,14 +391,17 @@ If you are happy,you can enter "EXIT" to exit.""")
         box.showinfo('结果', tmp_result)
     elif Home_Choice == '计算鸡兔同笼问题':
         def main(head, feet):
-            chickens = (4 * head - feet) / 2
-            if head != 0 and (4 * head - feet) % (chickens * 2) == 0:
-                rabbits = head - chickens
-                if chickens < 0 or rabbits < 0:
-                    box.showerror('无解', f'{head}个头，{feet}只脚的题目无解')
+            chickens = int((4 * head - feet) / 2)
+            try:
+                if head != 0 and (4 * head - feet) % (chickens * 2) == 0:
+                    rabbits = int(head - chickens)
+                    if chickens < 0 or rabbits < 0:
+                        box.showerror('无解', f'{head}个头，{feet}只脚的题目无解')
+                    else:
+                        box.showinfo('结果', f'鸡有{str(chickens)}只，兔子有{str(rabbits)}只')
                 else:
-                    box.showinfo('结果', f'鸡有{str(chickens)}只，兔子有{str(rabbits)}只')
-            else:
+                    box.showerror('无解', f'{head}个头，{feet}只脚的题目无解')
+            except ZeroDivisionError:
                 box.showerror('无解', f'{head}个头，{feet}只脚的题目无解')
 
 
