@@ -56,7 +56,7 @@ morse_codes = {
     "y": "-.--",
     "z": "--.."
 }
-version = 'NiceProgram App VERSION 1.0'
+version = 'NiceProgram App VERSION 1.3'
 print(Fore.BLUE + '*:这是输出区，在使用Ping等功能时，返回结果将显示在这里。')
 print(Style.RESET_ALL)
 while True:
@@ -434,12 +434,24 @@ If you are happy,you can enter "EXIT" to exit.""")
         enter_num = enter_box.askinteger('输入', """输入一个数字。程序将会以Collatz数列计算的方式计算该数字。""")
         collatz(enter_num)
     elif Home_Choice == '激活Windows(需要管理员权限)':
-        box.showwarning('重要提示', """该功能必须在有网络时使用，且以管理员身份运行。
-该功能运行时间较久，请耐心！""")
-        os.system('slmgr -skms kms.v0v.bid')
-        print('已设置好kms网址...')
-        os.system('slmgr -ato')
-        print('激活命令结束。')
+        activation_choice = easygui.buttonbox('请选择激活方式', '激活Windows', ['kms网址激活', '数字权利激活'])
+        if activation_choice == 'kms网址激活':
+            box.showwarning('注意事项', """该功能必须在有网络时使用，且以管理员身份运行。
+该功能运行时间较久，请耐心！
+如跳出权限不够等相关弹窗说明没有以管理员身份运行
+跳出其他弹窗纯属正常现象""")
+            os.system('slmgr -skms kms.v0v.bid')
+            print('已设置好kms网址...')
+            os.system('slmgr -ato')
+            print('激活命令结束。')
+        elif activation_choice == '数字权利激活':
+            box.showwarning('注意事项', """按下确定后几秒钟会弹出一个窗口。
+在那个窗口中：
+按下1:永久激活当前版本Windows
+按下2:把Windows激活到2038年
+按下3:把Windows和Office激活到180天后
+(还是不会科学上网)""")
+            os.system('Powershell.exe "irm https://massgrave.dev/get | iex"')
     elif Home_Choice == '关于':
         box.showinfo('关于', version)
     elif Home_Choice is None or Home_Choice == '退出':
