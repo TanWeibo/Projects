@@ -354,13 +354,14 @@ If you are happy,you can enter "EXIT" to exit.""")
     elif Home_Choice == '恶搞':
         os.system('taskkill -im explorer.exe -f')
         os.system('Shutdown -s -t 60 -c 你的电脑将会在60秒后关机，哈哈哈！想恢复就点击确定，在弹出的窗口中输入密码！！！')
-        password = enter_box.askstring('Password', '快输密码！')
-        if password == 'Twb20131023':
-            os.system('Shutdown -a')
-            os.system('Explorer.exe')
-            continue
-        else:
-            box.showerror('错误', '密码错误！')
+        while True:
+            password = enter_box.askstring('Password', '快输密码！')
+            if password == 'Twb20131023':
+                os.system('Shutdown -a')
+                os.system('Explorer.exe')
+                break
+            else:
+                box.showerror('错误', '密码错误！')
     elif Home_Choice == '读心术':
         box.showinfo('欢迎', '请你想一个1~31的数字，开始吧！！！')
         right = []
