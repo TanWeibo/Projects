@@ -10,6 +10,7 @@ import time
 import sys
 from colorama import Fore, Back, Style
 
+normalRun = False
 try:
     file_sleepTime = open('H:/Projects/App/Setting Files/End_Sleep_Time.App-Setting', 'r')
     end_sleep_time = int(file_sleepTime.read())
@@ -21,8 +22,17 @@ except ValueError:
     end_sleep_time = 5
     file_sleepTime.close()
 except FileNotFoundError:
-    box.showwarning('警告', '找不到设置文件，请按H:/Projects/App/Help/Helps.txt解决！')
-    sys.exit(1)
+    if len(sys.argv) != 2:
+        box.showwarning('警告', '找不到设置文件，请按H:/Projects/App/Help/Helps.txt解决！')
+        sys.exit(1)
+    elif len(sys.argv) == 2:
+        if sys.argv[1].lower() == 'normalrun':
+            print('你现在处于NormalRun模式')
+            end_sleep_time = 5
+            normalRun = True
+        else:
+            print('无效参数！')
+            end_sleep_time = 5
 except Exception:
     print('未知错误，end_sleep_time将会=5')
     end_sleep_time = 5
@@ -56,7 +66,11 @@ morse_codes = {
     "y": "-.--",
     "z": "--.."
 }
-version = 'NiceProgram App VERSION 1.3'
+if normalRun:
+    version = """NiceProgram App VERSION 1.3
+处于NormalRun模式"""
+elif not normalRun:
+    version = 'NiceProgram App VERSION 1.3'
 print(Fore.BLUE + '*:这是输出区，在使用Ping等功能时，返回结果将显示在这里。')
 print(Style.RESET_ALL)
 while True:
