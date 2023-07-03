@@ -77,7 +77,7 @@ while True:
     Home_Choice = easygui.buttonbox('选择一个功能', '主页',
                                     ['猜数字', '中英互译机', 'Ping', '石头剪刀布', '进制转换', '让你的设备蓝屏'
                                         , '摩斯密码转换器', '计算正确率', '计算平均数', 'Preview', '恶搞', '读心术',
-                                     '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '关于', '退出'])
+                                     '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表', '关于', '退出'])
     if Home_Choice == '猜数字':
         file_sleepTime = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'a')
         scope = enter_box.askstring('输入范围', '输入范围，中间用“~”分隔')
@@ -467,6 +467,13 @@ If you are happy,you can enter "EXIT" to exit.""")
 按下3:把Windows和Office激活到180天后
 (还是不会科学上网)""")
             os.system('Powershell.exe "irm https://massgrave.dev/get | iex"')
+    elif Home_Choice == '九九乘法表':
+        box.showinfo('info', '乘法表将会在输出区内输出')
+        print('九九乘法表：')
+        for i in range(1, 10):
+            for j in range(1, i + 1):
+                print(f'{j}x{i}={i * j}', end='\t')
+            print()
     elif Home_Choice == '关于':
         box.showinfo('关于', version)
     elif Home_Choice is None or Home_Choice == '退出':
