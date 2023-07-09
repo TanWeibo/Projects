@@ -77,7 +77,8 @@ while True:
     Home_Choice = easygui.buttonbox('选择一个功能', '主页',
                                     ['猜数字', '中英互译机', 'Ping', '石头剪刀布', '进制转换', '让你的设备蓝屏'
                                         , '摩斯密码转换器', '计算正确率', '计算平均数', 'Preview', '恶搞', '读心术',
-                                     '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表', '关于', '退出'])
+                                     '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表', 'BMI检测',
+                                     '关于', '退出'])
     if Home_Choice == '猜数字':
         scope = enter_box.askstring('输入范围', '输入范围，中间用“~”分隔')
         find_to = scope.find('~')
@@ -489,6 +490,18 @@ If you are happy,you can enter "EXIT" to exit.""")
             for j in range(1, i + 1):
                 print(f'{j}x{i}={i * j}', end='\t')
             print()
+    elif Home_Choice == 'BMI检测':
+        high = enter_box.askfloat('输入', '输入身高(m)')
+        weight = enter_box.askfloat('输入', '输入体重(kg)')
+        bmi = weight / (high ** 2)
+        if bmi <= 18.4:
+            box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：你的体型偏瘦，要注意营养哦~')
+        elif 18.4 < bmi <= 23.9:
+            box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：标准体型，继续保持哦~')
+        elif 24 <= bmi <= 27.9:
+            box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：你的体型过胖，要注意身体哦~')
+        elif bmi >= 28:
+            box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：你的体型肥胖，要注意饮食哦~')
     elif Home_Choice == '关于':
         box.showinfo('关于', version)
     elif Home_Choice is None or Home_Choice == '退出':
