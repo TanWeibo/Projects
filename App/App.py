@@ -79,49 +79,64 @@ while True:
                                         , '摩斯密码转换器', '计算正确率', '计算平均数', 'Preview', '恶搞', '读心术',
                                      '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表', '关于', '退出'])
     if Home_Choice == '猜数字':
-        file_sleepTime = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'a')
         scope = enter_box.askstring('输入范围', '输入范围，中间用“~”分隔')
         find_to = scope.find('~')
-        start = int(scope[:find_to])
-        end = int(scope[find_to + 1:])
-        right = random.randint(start, end)
-        Error_frequency = 0
-        while True:
-            try:
-                Guess_numbers_Enter = enter_box.askstring('输入', f"""计算机已经创建了{start}~{end}中的数字，尽你的能力猜到它！输入exit退出
+        try:
+            start = int(scope[:find_to])
+            end = int(scope[find_to + 1:])
+        except ValueError:
+            box.showerror('数值错误', '你输入的不是数/整数！')
+        else:
+            right = random.randint(start, end)
+            Error_frequency = 0
+            while True:
+                try:
+                    Guess_numbers_Enter = enter_box.askstring('输入', f"""计算机已经创建了{start}~{end}中的数字，尽你的能力猜到它！
+输入exit退出
 输入empty清空所有数据""")
-                if Guess_numbers_Enter != 'exit' and Guess_numbers_Enter != 'empty':
-                    Guess_numbers_Enter = int(Guess_numbers_Enter)
-                    if start <= Guess_numbers_Enter <= end:
-                        if Guess_numbers_Enter == right:
-                            box.showinfo('猜对了！', f'恭喜你猜对了！你一共用了{Error_frequency}次。')
-                            file_sleepTime.write('\n')
-                            file_sleepTime.write(f"""错误次数：{str(Error_frequency)}
+                    if Guess_numbers_Enter != 'exit' and Guess_numbers_Enter != 'empty':
+                        Guess_numbers_Enter = int(Guess_numbers_Enter)
+                        if start <= Guess_numbers_Enter <= end:
+                            if Guess_numbers_Enter == right:
+                                box.showinfo('猜对了！', f'恭喜你猜对了！你一共用了{Error_frequency}次。')
+                                try:
+                                    file_guessNumber = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'a')
+                                except FileNotFoundError:
+                                    box.showerror('找不到文件', '找不到文件！')
+                                    break
+                                except Exception:
+                                    box.showerror('错误', '未知错误。')
+                                    break
+                                else:
+                                    file_guessNumber.write('\n')
+                                    file_guessNumber.write(f"""错误次数：{str(Error_frequency)}
 日期：{datetime.today()}
 范围：{str(start)}~{str(end)}
-END""")
-                            file_sleepTime.close()
-                            break
-                        elif Guess_numbers_Enter > right:
-                            Error_frequency += 1
-                            box.showerror('输入错误', '太大啦！')
+------""")
+                                    file_guessNumber.close()
+                                    break
+                            elif Guess_numbers_Enter > right:
+                                Error_frequency += 1
+                                box.showerror('输入错误', '太大啦！')
+                                continue
+                            elif Guess_numbers_Enter < right:
+                                Error_frequency += 1
+                                box.showerror('输入错误', '太小啦！')
+                        else:
+                            box.showerror('超出范围', '输入的数值超出范围！')
                             continue
-                        elif Guess_numbers_Enter < right:
-                            Error_frequency += 1
-                            box.showerror('输入错误', '太小啦！')
-                    else:
-                        box.showerror('超出范围', '输入的数值超出范围！')
-                        continue
-                elif Guess_numbers_Enter == 'exit':
-                    break
-                elif Guess_numbers_Enter == 'empty':
-                    file_sleepTime = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'w')
-                    file_sleepTime.write('GuessNumber FREQUENCY')
-                    file_sleepTime.close()
-                    break
-            except Exception:
-                box.showerror('意想不到的事发生了！', '程序发生了未知错误！\n0x0')
-                break
+                    elif Guess_numbers_Enter == 'exit':
+                        break
+                    elif Guess_numbers_Enter == 'empty':
+                        file_sleepTime = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'w')
+                        file_sleepTime.write('GuessNumber FREQUENCY')
+                        file_sleepTime.close()
+                        break
+                except ValueError:
+                    box.showerror('数值错误', '你输入的不是数！')
+                    continue
+                except Exception:
+                    box.showerror('错误', '未知错误')
     elif Home_Choice == '中英互译机':
         string = enter_box.askstring('翻译', '输入翻译内容')
         data = {
