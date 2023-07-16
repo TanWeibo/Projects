@@ -491,17 +491,28 @@ If you are happy,you can enter "EXIT" to exit.""")
                 print(f'{j}x{i}={i * j}', end='\t')
             print()
     elif Home_Choice == 'BMI检测':
+        bmiFile = open('H:\Projects\App\BMI\BMI Log.log', 'a')
         high = enter_box.askfloat('输入', '输入身高(m)')
         weight = enter_box.askfloat('输入', '输入体重(kg)')
         bmi = weight / (high ** 2)
+        bmiFile.write(f"""\n时间:{datetime.today()}
+你的身高：{high}m
+你的体重：{weight}kg
+BMI:{str(int(bmi))}""")
         if bmi <= 18.4:
             box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：你的体型偏瘦，要注意营养哦~')
+            bmiFile.write('\n提示：温馨提示：你的体型偏瘦，要注意营养哦~')
         elif 18.4 < bmi <= 23.9:
             box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：标准体型，继续保持哦~')
+            bmiFile.write('\n温馨提示：标准体型，继续保持哦~')
         elif 24 <= bmi <= 27.9:
             box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：你的体型过胖，要注意身体哦~')
+            bmiFile.write('\n温馨提示：你的体型过胖，要注意身体哦~')
         elif bmi >= 28:
             box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：你的体型肥胖，要注意饮食哦~')
+            bmiFile.write('\n温馨提示：你的体型肥胖，要注意饮食哦~')
+        bmiFile.write('\n---------')
+        bmiFile.close()
     elif Home_Choice == '关于':
         box.showinfo('关于', version)
     elif Home_Choice is None or Home_Choice == '退出':
