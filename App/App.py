@@ -172,6 +172,16 @@ while True:
             print(Python_ping)
             print('结束')
     elif Home_Choice == '石头剪刀布':
+
+        def show_state(now_state):
+            if now_state == 'win':
+                box.showinfo('NICE!', '你赢了！牛逼！')
+            elif now_state == 'lose':
+                box.showinfo('再接再厉！', '你输了。再接再厉！')
+            elif now_state == 'tie':
+                box.showinfo('打平了', '打平了，旗鼓相当。')
+
+
         win = 0
         lose = 0
         tie = 0
@@ -189,41 +199,41 @@ while True:
             System_Choice = random.choice(FingerGuessing_list)
             if Your_Choice == '石头':
                 if System_Choice == '石头':
-                    box.showinfo('打平了', '打平了！旗鼓相当。')
+                    show_state('tie')
                     tie += 1
                     continue
                 elif System_Choice == '剪刀':
-                    box.showinfo('NICE!', '你赢了！牛逼！')
+                    show_state('win')
                     win += 1
                     continue
                 elif System_Choice == '布':
-                    box.showinfo('再接再厉！', '你输了！再接再厉！')
+                    show_state('lose')
                     lose += 1
                     continue
             elif Your_Choice == '剪刀':
                 if System_Choice == '石头':
-                    box.showinfo('再接再厉！', '你输了！再接再厉！')
+                    show_state('lose')
                     lose += 1
                     continue
                 elif System_Choice == '剪刀':
-                    box.showinfo('打平了', '打平了！旗鼓相当。')
+                    show_state('tie')
                     tie += 1
                     continue
                 elif System_Choice == '布':
-                    box.showinfo('NICE!', '你赢了！牛逼！')
+                    show_state('win')
                     win += 1
                     continue
             elif Your_Choice == '布':
                 if System_Choice == '石头':
-                    box.showinfo('NICE!', '你赢了！牛逼！')
+                    show_state('win')
                     win += 1
                     continue
                 elif System_Choice == '剪刀':
-                    box.showinfo('再接再厉！', '你输了！再接再厉！')
+                    show_state('lose')
                     lose += 1
                     continue
                 elif System_Choice == '布':
-                    box.showinfo('打平了', '打平了！旗鼓相当。')
+                    show_state('tie')
                     tie += 1
                     continue
             elif Your_Choice is None:
