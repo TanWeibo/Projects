@@ -474,7 +474,10 @@ If you are happy,you can enter "EXIT" to exit.""")
 
 
         enter_num = enter_box.askinteger('输入', """输入一个数字。程序将会以Collatz数列计算的方式计算该数字。""")
-        collatz(enter_num)
+        if enter_num > 0:
+            collatz(enter_num)
+        else:
+            box.showwarning('Collatz', 'Collatz计算方式不能计算小于/等于0的数字')
     elif Home_Choice == '激活Windows(需要管理员权限)':
         activation_choice = easygui.buttonbox('请选择激活方式', '激活Windows', ['kms网址激活', '数字权利激活'])
         if activation_choice == 'kms网址激活':
@@ -502,7 +505,7 @@ If you are happy,you can enter "EXIT" to exit.""")
                 print(f'{j}x{i}={i * j}', end='\t')
             print()
     elif Home_Choice == 'BMI检测':
-        bmiFile = open('H:\Projects\App\BMI\BMI Log.log', 'a')
+        bmiFile = open('H:/Projects/App/BMI/BMI Log.log', 'a')
         high = enter_box.askfloat('输入', '输入身高(m)')
         weight = enter_box.askfloat('输入', '输入体重(kg)')
         bmi = weight / (high ** 2)
