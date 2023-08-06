@@ -76,7 +76,7 @@ print(Style.RESET_ALL)
 while True:
     Home_Choice = easygui.buttonbox('选择一个功能', '主页',
                                     ['猜数字', '中英互译机', 'Ping', '石头剪刀布', '进制转换', '让你的设备蓝屏'
-                                        , '摩斯密码转换器', '计算正确率', '计算平均数', 'Preview', '恶搞', '读心术',
+                                        , '摩斯密码转换器', '计算正确率', '计算平均数', 'Talk out', '恶搞', '读心术',
                                      '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表',
                                      'BMI检测',
                                      '关于', '退出'])
@@ -369,29 +369,20 @@ Windows 11加了保护措施，不能蓝屏......""")
                 average = number_sum / len(numbers)
                 box.showinfo('平均数', f'它们的平均数为：{average}')
                 numbers = []
-    elif Home_Choice == 'Preview':
-        hide_enter = input('Enter the preview function name:Enter "EXIT" to exit.')
-        if hide_enter == 'Talk out':
-            print("""Talk out:
+    elif Home_Choice == 'Talk out':
+        print("""Talk out:
 If you are happy,you can enter "EXIT" to exit.""")
-            __sos__ = 0
-            while True:
-                talk_out = input()
-                if talk_out == 'EXIT':
+        while True:
+            talk_out = input()
+            if talk_out == 'EXIT':
+                os.system('cls')
+                yes = input('Do you want exit?(Enter "yes" or "no".)')
+                if yes == 'yes':
                     os.system('cls')
-                    yes = input('Do you want exit?(Enter "yes" or "no".)')
-                    if yes == 'yes':
-                        os.system('cls')
-                        break
-                    else:
-                        continue
-                elif talk_out == 'sos' and __sos__ <= 2:
-                    __sos__ += 1
-                elif talk_out == 'sos' and __sos__ == 3:
-                    print('SORRY,I CANNOT HELP YOU.Don\'t forget.I am just a program.')
-        elif hide_enter == 'EXIT':
-            os.system('cls')
-            continue
+                    break
+                else:
+                    os.system('cls')
+                    continue
     elif Home_Choice == '恶搞':
         os.system('taskkill -im explorer.exe -f')
         os.system('Shutdown -s -t 60 -c 你的电脑将会在60秒后关机，哈哈哈！想恢复就点击确定，在弹出的窗口中输入密码！！！')
@@ -406,7 +397,7 @@ If you are happy,you can enter "EXIT" to exit.""")
     elif Home_Choice == '读心术':
         box.showinfo('欢迎', '请你想一个1~31的数字，开始吧！！！')
         right = []
-        pow = 1
+        _pow_ = 1
         result = 0
         for i in range(1, 33):
             temp = i
@@ -427,8 +418,8 @@ If you are happy,you can enter "EXIT" to exit.""")
                 tmp.append(ite)
             tmp_str = str(tmp) + "\n\n如果你想的数字在上面出现了，请输入 1，如果没有出现，请输入 0。\n\n请输入数字 0 或 1:  "
             a = enter_box.askinteger('info', tmp_str)
-            result = pow * int(a) + result
-            pow *= 2
+            result = _pow_ * int(a) + result
+            _pow_ *= 2
         tmp_result = "你想的数是:" + str(result)
         box.showinfo('结果', tmp_result)
     elif Home_Choice == '计算鸡兔同笼问题':
