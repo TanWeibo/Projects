@@ -370,8 +370,11 @@ Windows 11加了保护措施，不能蓝屏......""")
                 box.showinfo('平均数', f'它们的平均数为：{average}')
                 numbers = []
     elif Home_Choice == 'Talk out':
-        print("""Talk out:
-If you are happy,you can enter "EXIT" to exit.""")
+        help_words = """If you are happy,you can enter "EXIT" to exit.
+Enter "CLEAN" to clean the enter area.
+Enter "HELP" to print the help words."""
+        print(f"""Talk out:
+{help_words}""")
         while True:
             talk_out = input()
             if talk_out == 'EXIT':
@@ -383,6 +386,10 @@ If you are happy,you can enter "EXIT" to exit.""")
                 else:
                     os.system('cls')
                     continue
+            elif talk_out == 'CLEAN':
+                os.system('cls')
+            elif talk_out == 'HELP':
+                print(help_words)
     elif Home_Choice == '恶搞':
         os.system('taskkill -im explorer.exe -f')
         os.system('Shutdown -s -t 60 -c 你的电脑将会在60秒后关机，哈哈哈！想恢复就点击确定，在弹出的窗口中输入密码！！！')
