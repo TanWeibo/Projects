@@ -67,10 +67,10 @@ morse_codes = {
     "z": "--.."
 }
 if normalRun:
-    version = """NiceProgram App VERSION 1.3
-处于NormalRun模式"""
+    version = """NiceProgram App VERSION 2.0
+处于NormalRun模式，自定义功能受到限制，具体内容见H:/Projects/App/Help/Helps.txt"""
 elif not normalRun:
-    version = 'NiceProgram App VERSION 1.3'
+    version = 'NiceProgram App VERSION 2.0'
 print(Fore.BLUE + '*:这是输出区，在使用Ping等功能时，返回结果将显示在这里。')
 print(Style.RESET_ALL)
 while True:
@@ -78,8 +78,7 @@ while True:
                                     ['猜数字', '中英互译机', 'Ping', '石头剪刀布', '进制转换', '让你的设备蓝屏'
                                         , '摩斯密码转换器', '计算正确率', '计算平均数', 'Talk out', '恶搞', '读心术',
                                      '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表',
-                                     'BMI检测', '凑钱数',
-                                     '关于', '退出'])
+                                     'BMI检测', '凑钱数', '关于'])
     if Home_Choice == '猜数字':
         scope = enter_box.askstring('输入范围', '输入范围，中间用“~”分隔')
         find_to = scope.find('~')
@@ -547,7 +546,7 @@ BMI:{str(int(bmi))}""")
         box.showinfo('result', f'结果：{all_manner}')
     elif Home_Choice == '关于':
         box.showinfo('关于', version)
-    elif Home_Choice is None or Home_Choice == '退出':
+    elif Home_Choice is None:
         end_time = time.perf_counter()
         print(f'本次运行时间:{str(end_time - start_time)}秒')
         time.sleep(end_sleep_time)
