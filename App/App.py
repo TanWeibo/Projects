@@ -78,7 +78,7 @@ while True:
                                     ['猜数字', '中英互译机', 'Ping', '石头剪刀布', '进制转换', '让你的设备蓝屏'
                                         , '摩斯密码转换器', '计算正确率', '计算平均数', 'Talk out', '恶搞', '读心术',
                                      '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表',
-                                     'BMI检测', '凑钱数', '关于'])
+                                     'BMI检测', '凑钱数', '按升/降排序数列', '关于'])
     if Home_Choice == '猜数字':
         scope = enter_box.askstring('输入范围', '输入范围，中间用“~”分隔')
         find_to = scope.find('~')
@@ -544,6 +544,29 @@ BMI:{str(int(bmi))}""")
         box.showinfo('info', '该功能可以算出1、2、5元凑成指定钱数有几种可能。')
         compute_money(enter_box.askinteger('money', '输入钱数'))
         box.showinfo('result', f'结果：{all_manner}')
+    elif Home_Choice == '按升/降排序数列':
+        while True:
+            sort_by = easygui.buttonbox('选择排序方式', '排序', ['升序', '降序'])
+            if sort_by is None:
+                break
+            nums = enter_box.askstring('排序', '请输入序列，确保用空格分开，否则可能无法排序或报错！')
+            try:
+                nums = nums.split(' ')
+                for i in range(0, len(nums)):
+                    nums[i] = int(nums[i])
+            except ValueError:
+                box.showerror('错误', '你输入的数列有些不是数字！')
+                break
+            for i in range(len(nums) - 1):
+                for j in range(len(nums) - 1 - i):
+                    if sort_by == '升序':
+                        if nums[j] > nums[j + 1]:
+                            nums[j], nums[j + 1] = nums[j + 1], nums[j]
+                    elif sort_by == '降序':
+                        if nums[j] < nums[j + 1]:
+                            nums[j], nums[j + 1] = nums[j + 1], nums[j]
+            print(f'转换成功！结果：{nums}')
+            box.showinfo('RESULT', f'转换成功，结果：{nums}，如需复制，请到输出区。')
     elif Home_Choice == '关于':
         box.showinfo('关于', version)
     elif Home_Choice is None:
