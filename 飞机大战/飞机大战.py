@@ -131,8 +131,8 @@ while running:
 https://github.com/TanWeibo/Projects/blob/main/飞机大战/飞机大战.py
 外挂状态：{外挂}""")
             elif event.key == pygame.K_F6:
-                pygame.quit()
-                os.system('"H:/Projects/飞机大战/Exe File/飞机大战.exe"')
+                message.showerror('Stop use this option.', '随着exe文件的停止使用\
+该也停止使用了，请自行重新运行，Thanks!')
     all_sprites.update()
 
     hits_rocks_bullet = pygame.sprite.groupcollide(rocks, bullets, True, True)
