@@ -330,17 +330,12 @@ Windows 11加了保护措施，不能蓝屏......""")
             elif letter_enter == 'EXIT':
                 break
     elif Home_Choice == '计算正确率':
-        all_questions = enter_box.askinteger('计算正确率', '输入题目总数')
-        right_questions = enter_box.askinteger('计算正确率', '输入正确题目总数')
-        accuracy = right_questions / all_questions * 100
-        if accuracy < 0 or accuracy > 100:
-            accuracy = str(right_questions / all_questions * 100) + '%'
-            box.showerror('错误的结果', f"""计算逻辑错误:
-超出范围。
-错误结果:{accuracy}""")
-        else:
-            accuracy = str(right_questions / all_questions * 100) + '%'
-            box.showinfo('正确率', f'正确率：{accuracy}')
+        all_question = enter_box.askinteger('计算正确率', '输入题目总数', minvalue=1)
+        right_questions = enter_box.askinteger('计算正确率', '输入正确题目总数', minvalue=0,
+                                               maxvalue=all_question)
+        accuracy = right_questions / all_question * 100
+        accuracy = str(right_questions / all_question * 100) + '%'
+        box.showinfo('正确率', f'正确率：{accuracy}')
     elif Home_Choice == '计算平均数':
         numbers = []
         set_del_max_min = True
@@ -440,7 +435,7 @@ Enter "HELP" to print the help words."""
             for ite in res:
                 tmp.append(ite)
             tmp_str = str(tmp) + "\n\n如果你想的数字在上面出现了，请输入 1，如果没有出现，请输入 0。\n\n请输入数字 0 或 1:  "
-            a = enter_box.askinteger('info', tmp_str)
+            a = enter_box.askinteger('info', tmp_str, minvalue=0, maxvalue=1)
             result = _pow_ * int(a) + result
             _pow_ *= 2
         tmp_result = "你想的数是:" + str(result)
@@ -461,8 +456,8 @@ Enter "HELP" to print the help words."""
                 box.showerror('无解', f'{head}个头，{feet}只脚的题目无解')
 
 
-        enter_head = enter_box.askinteger('输入', '头的数量')
-        enter_feet = enter_box.askinteger('输入', '脚的数量')
+        enter_head = enter_box.askinteger('输入', '头的数量', minvalue=1)
+        enter_feet = enter_box.askinteger('输入', '脚的数量', minvalue=enter_head)
         main(enter_head, enter_feet)
     elif Home_Choice == 'Collatz数列':
         def collatz(num):
@@ -487,11 +482,9 @@ Enter "HELP" to print the help words."""
                     break
 
 
-        enter_num = enter_box.askinteger('输入', """输入一个数字。程序将会以Collatz数列计算的方式计算该数字。""")
-        if enter_num > 0:
-            collatz(enter_num)
-        else:
-            box.showwarning('Collatz', 'Collatz计算方式不能计算小于/等于0的数字')
+        enter_num = enter_box.askinteger('输入', """输入一个数字。程序将会以Collatz数列计算的方式计算该数字。""",
+                                         minvalue=1)
+        collatz(enter_num)
     elif Home_Choice == '激活Windows(需要管理员权限)':
         activation_choice = easygui.buttonbox('请选择激活方式', '激活Windows', ['kms网址激活', '数字权利激活'])
         if activation_choice == 'kms网址激活':
@@ -520,8 +513,8 @@ Enter "HELP" to print the help words."""
             print()
     elif Home_Choice == 'BMI检测':
         bmiFile = open('H:/Projects/App/BMI/BMI Log.log', 'a')
-        high = enter_box.askfloat('输入', '输入身高(m)')
-        weight = enter_box.askfloat('输入', '输入体重(kg)')
+        high = enter_box.askfloat('输入', '输入身高(m)', minvalue=0.1, maxvalue=2.0)
+        weight = enter_box.askfloat('输入', '输入体重(kg)', minvalue=2.5, maxvalue=640.0)
         bmi = weight / (high ** 2)
         bmiFile.write(f"""\n时间:{datetime.today()}
 你的身高：{high}m
@@ -559,7 +552,7 @@ BMI:{str(int(bmi))}""")
             print('计算成功')
             return all_manner
         box.showinfo('info', '该功能可以算出1、2、5元凑成指定钱数有几种可能。')
-        compute_money(enter_box.askinteger('money', '输入钱数'))
+        compute_money(enter_box.askinteger('money', '输入钱数', minvalue=1))
         box.showinfo('result', f'结果：{all_manner}')
     elif Home_Choice == '按升/降排序数列':
         while True:
