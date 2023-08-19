@@ -9,6 +9,7 @@ from datetime import datetime
 import time
 import sys
 from colorama import Fore, Back, Style
+import socket
 
 normalRun = False
 try:
@@ -78,7 +79,7 @@ while True:
                                     ['猜数字', '中英互译机', 'Ping', '石头剪刀布', '进制转换', '让你的设备蓝屏'
                                         , '摩斯密码转换器', '计算正确率', '计算平均数', 'Talk out', '恶搞', '读心术',
                                      '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表',
-                                     'BMI检测', '凑钱数', '按升/降排序数列', '反馈问题', '关于'])
+                                     'BMI检测', '凑钱数', '按升/降排序数列', '定时关机', '反馈问题', '关于'])
     if Home_Choice == '猜数字':
         scope = enter_box.askstring('输入范围', '输入范围，中间用“~”分隔')
         find_to = scope.find('~')
@@ -164,7 +165,8 @@ while True:
                 print('结束')
             except Exception:
                 box.showerror('错误',
-                              '调用系统Ping时错误，请检查系统是否是Windows(或者Windows版本低于Windows 98)，或者是Ping时发生其他错误')
+                              '调用系统Ping时错误，请检查系统是否是Windows(或者Windows版本低于Windows 98)，或者是Ping时\
+发生其他错误')
         elif Ping_Choice == '使用Python Ping':
             Python_ping_url = enter_box.askstring('输入', '请输入网址')
             Python_ping = str(ping(Python_ping_url))
@@ -577,6 +579,30 @@ BMI:{str(int(bmi))}""")
                             nums[j], nums[j + 1] = nums[j + 1], nums[j]
             print(f'转换成功！结果：{nums}')
             box.showinfo('RESULT', f'转换成功，结果：{nums}，如需复制，请到输出区。')
+    elif Home_Choice == '定时关机':
+        shutdown_choice = easygui.buttonbox('请选择类型：', '定时关机',
+                                            ['在当前计算机上设置定时关机', '远程关机在当前局域网下的计算机',
+                                             '取消在当前计算机上的关机计划'], default_choice='在当前计算机上设置定时关机')
+        if shutdown_choice == '在当前计算机上设置定时关机':
+            shutdown_time = enter_box.askinteger('关机时间', '请输入几秒后关机', minvalue=5)
+            yn_continue = box.askyesno('确认', f'请确认关机等待时间：{str(shutdown_time)}秒，在当前计算机上。')
+            if yn_continue:
+                os.system(f'shutdown -s -t {str(shutdown_time)} -c 已经在App.py中设置好关机计划：{str(shutdown_time)}秒后关机。\
+你可以在App.py中取消计划。')
+        elif shutdown_choice == '远程关机在当前局域网下的计算机':
+            box.showwarning('warning', """请确保目标计算机已经在组策略中设置好了，并且你知道对方ip地址。才能使用此功能。
+否则你将会看到输出区提示：”拒绝访问“字样
+具体设置方法自行Baidu""")
+            shutdown_time = enter_box.askinteger('关机时间', '请输入几秒后关机', minvalue=20)
+            ip = enter_box.askstring('ip', '请输入你要控制的计算机的ip地址')
+            yn_continue = box.askyesno('确认', f'请确认关机等待时间：{str(shutdown_time)}秒，在当前{ip}上。')
+            if yn_continue:
+                this_pc_name = socket.gethostname()
+                os.system(f'shutdown -s -t {str(shutdown_time)} -m \\\\{ip}')
+                box.showinfo('成功', '执行成功')
+        elif shutdown_choice == '取消在当前计算机上的关机计划':
+            os.system('shutdown -a')
+            box.showinfo('成功', '取消成功')
     elif Home_Choice == '反馈问题':
         box.showinfo('Have any questions?', '如果您有建议或者问题，请发送邮件到：543622842@qq.com 或者 yelij\
 ing830@foxmail.com\n十分感谢您的支持！\nTanWeibo\n2023/8/18')
