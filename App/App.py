@@ -74,8 +74,19 @@ elif not normalRun:
     version = 'NiceProgram App VERSION 2.0'
 print(Fore.BLUE + '*:这是输出区，在使用Ping等功能时，返回结果将显示在这里。')
 print(Style.RESET_ALL)
+will_shutdown = False
+message = '欢迎来到App.py，请你选择一个功能'
+shutdown_time = None
 while True:
-    Home_Choice = easygui.buttonbox('选择一个功能', '主页',
+    if will_shutdown:
+        message = f"""欢迎来到App.py，请你选择一个功能
+请注意，在{int(shutdown_time)}秒后，你的电脑将会关机，你可以在App.py>定时关机>取消在当前计算机上的关机计划中取消。如果无法取消请赶紧在\
+cmd、PowerShell、终端窗口或运行窗口中执行命令：
+shutdown -a
+如果已经执行shutdown -a，请忽略此消息！"""
+    else:
+        message = '欢迎来到App.py，请你选择一个功能'
+    Home_Choice = easygui.buttonbox(message, '主页',
                                     ['猜数字', '中英互译机', 'Ping', '石头剪刀布', '进制转换', '让你的设备蓝屏'
                                         , '摩斯密码转换器', '计算正确率', '计算平均数', 'Talk out', '恶搞', '读心术',
                                      '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表',
@@ -582,11 +593,13 @@ BMI:{str(int(bmi))}""")
     elif Home_Choice == '定时关机':
         shutdown_choice = easygui.buttonbox('请选择类型：', '定时关机',
                                             ['在当前计算机上设置定时关机', '远程关机在当前局域网下的计算机',
-                                             '取消在当前计算机上的关机计划'], default_choice='在当前计算机上设置定时关机')
+                                             '取消在当前计算机上的关机计划',
+                                             '关闭在主页中的提醒'], default_choice='在当前计算机上设置定时关机')
         if shutdown_choice == '在当前计算机上设置定时关机':
             shutdown_time = enter_box.askinteger('关机时间', '请输入几秒后关机', minvalue=5)
             yn_continue = box.askyesno('确认', f'请确认关机等待时间：{str(shutdown_time)}秒，在当前计算机上。')
             if yn_continue:
+                will_shutdown = True
                 os.system(f'shutdown -s -t {str(shutdown_time)} -c 已经在App.py中设置好关机计划：{str(shutdown_time)}秒后关机。\
 你可以在App.py中取消计划。')
         elif shutdown_choice == '远程关机在当前局域网下的计算机':
@@ -602,7 +615,11 @@ BMI:{str(int(bmi))}""")
                 box.showinfo('成功', '执行成功')
         elif shutdown_choice == '取消在当前计算机上的关机计划':
             os.system('shutdown -a')
+            will_shutdown = False
             box.showinfo('成功', '取消成功')
+        elif shutdown_choice == '关闭在主页中的提醒':
+            will_shutdown = False
+            box.showinfo('ok', '取消成功！')
     elif Home_Choice == '反馈问题':
         box.showinfo('Have any questions?', '如果您有建议或者问题，请发送邮件到：543622842@qq.com 或者 yelij\
 ing830@foxmail.com\n十分感谢您的支持！\nTanWeibo\n2023/8/18')
