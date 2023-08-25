@@ -11,6 +11,7 @@ import sys
 from colorama import Fore, Back, Style
 import socket
 
+print('Loading.... It\'ll take some time......')
 normalRun = False
 try:
     file_sleepTime = open('H:/Projects/App/Setting Files/End_Sleep_Time.App-Setting', 'r')
@@ -72,11 +73,12 @@ if normalRun:
 处于NormalRun模式，自定义功能受到限制，具体内容见H:/Projects/App/Help/Helps.txt"""
 elif not normalRun:
     version = 'NiceProgram App VERSION 2.0'
-print(Fore.BLUE + '*:这是输出区，在使用Ping等功能时，返回结果将显示在这里。')
-print(Style.RESET_ALL)
 will_shutdown = False
 message = '欢迎来到App.py，请你选择一个功能'
 shutdown_time = None
+print('Done')
+print(Fore.BLUE + '*:这是输出区，在使用Ping等功能时，返回结果将显示在这里。')
+print(Style.RESET_ALL)
 while True:
     if will_shutdown:
         message = f"""欢迎来到App.py，请你选择一个功能
@@ -103,53 +105,53 @@ shutdown -a
             right = random.randint(start, end)
             Error_frequency = 0
             while True:
-                try:
-                    Guess_numbers_Enter = enter_box.askstring('输入', f"""计算机已经创建了{start}~{end}中的数字，尽你的能力猜到它！
+                Guess_numbers_Enter = enter_box.askstring('输入', f"""计算机已经创建了{start}~{end}中的数字，尽你的能力猜到它！
 输入exit退出
 输入empty清空所有数据""")
-                    if Guess_numbers_Enter != 'exit' and Guess_numbers_Enter != 'empty':
-                        Guess_numbers_Enter = int(Guess_numbers_Enter)
-                        if start <= Guess_numbers_Enter <= end:
-                            if Guess_numbers_Enter == right:
-                                box.showinfo('猜对了！', f'恭喜你猜对了！你一共用了{Error_frequency}次。')
-                                try:
-                                    file_guessNumber = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'a')
-                                except FileNotFoundError:
-                                    box.showerror('找不到文件', '找不到文件！')
-                                    break
-                                except Exception:
-                                    box.showerror('错误', '未知错误。')
-                                    break
-                                else:
-                                    file_guessNumber.write('\n')
-                                    file_guessNumber.write(f"""错误次数：{str(Error_frequency)}
+                if Guess_numbers_Enter != 'exit' and Guess_numbers_Enter != 'empty':
+                    if not Guess_numbers_Enter.isdecimal():
+                        box.showerror('数值错误', '你输入的不是数字')
+                        continue
+                    Guess_numbers_Enter = int(Guess_numbers_Enter)
+                    if start <= Guess_numbers_Enter <= end:
+                        if Guess_numbers_Enter == right:
+                            box.showinfo('猜对了！', f'恭喜你猜对了数字：{right}，你一共用了{Error_frequency}次。')
+                            try:
+                                file_guessNumber = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'a')
+                            except FileNotFoundError:
+                                box.showerror('找不到文件', 'App.py找不到指定文件：H:/Projects/App/GuessNumbe\
+rs/GuessNumbers.txt，所以导致无法写入文件')
+                                break
+                            except Exception:
+                                box.showerror('错误', '进行文件写入时发生了未知错误')
+                                break
+                            else:
+                                file_guessNumber.write('\n')
+                                file_guessNumber.write(f"""错误次数：{str(Error_frequency)}
+正确数字：{right}
 日期：{datetime.today()}
 范围：{str(start)}~{str(end)}
 ------""")
-                                    file_guessNumber.close()
-                                    break
-                            elif Guess_numbers_Enter > right:
-                                Error_frequency += 1
-                                box.showerror('输入错误', '太大啦！')
-                                continue
-                            elif Guess_numbers_Enter < right:
-                                Error_frequency += 1
-                                box.showerror('输入错误', '太小啦！')
-                        else:
-                            box.showerror('超出范围', '输入的数值超出范围！')
+                                file_guessNumber.close()
+                                break
+                        elif Guess_numbers_Enter > right:
+                            Error_frequency += 1
+                            box.showinfo('回答错误', '太大啦！')
                             continue
-                    elif Guess_numbers_Enter == 'exit':
-                        break
-                    elif Guess_numbers_Enter == 'empty':
-                        file_sleepTime = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'w')
-                        file_sleepTime.write('GuessNumber FREQUENCY')
-                        file_sleepTime.close()
-                        break
-                except ValueError:
-                    box.showerror('数值错误', '你输入的不是数！')
-                    continue
-                except Exception:
-                    box.showerror('错误', '未知错误')
+                        elif Guess_numbers_Enter < right:
+                            Error_frequency += 1
+                            box.showinfo('回答错误', '太小啦！')
+                    else:
+                        box.showerror('超出范围', '输入的数值超出范围！')
+                        continue
+                elif Guess_numbers_Enter == 'exit':
+                    break
+                elif Guess_numbers_Enter == 'empty':
+                    file_sleepTime = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'w')
+                    file_sleepTime.write('GuessNumber FREQUENCY')
+                    file_sleepTime.close()
+                    box.showinfo('成功', '清除成功！')
+                    break
     elif Home_Choice == '中英互译机':
         string = enter_box.askstring('翻译', '输入翻译内容')
         data = {
@@ -277,34 +279,34 @@ shutdown -a
         JinZhi_Choice = easygui.buttonbox('选择一个选项', '进制转换', ['十进制转二进制', '几进制转十进制'])
         if JinZhi_Choice == '十进制转二进制':
             while True:
-                JinZhi_Enter = enter_box.askstring('输入数字', '请输入一个十进制数字')
-                try:
-                    binary = bin(int(JinZhi_Enter))
+                num = enter_box.askstring('输入数字', '请输入一个十进制数字')
+                if num.isdecimal():
+                    binary = bin(int(num))
                     binary = str(binary)
                     binary = binary.replace('0b', '')
                     box.showinfo('结果', f'此二进制数是：{binary}')
                     break
-                except ValueError:
-                    box.showerror('错误', '请确保你输入的内容是数字！')
-                    continue
-                except Exception:
-                    box.showerror('意想不到的事发生了！', '程序发生了未知错误！')
-                    break
+                else:
+                    restart = box.askyesno('重新输入？', '你输入的不是数字，你想要重新输入吗？')
+                    if restart:
+                        continue
+                    else:
+                        break
         elif JinZhi_Choice == '几进制转十进制':
             while True:
-                JinZhi_Enter = enter_box.askstring('输入数字', '输入一个任意进制的数字')
-                what_JinZhi = enter_box.askstring('输入进制', '请输入你刚刚输入的数字的进制')
+                num = enter_box.askstring('输入数字', '输入一个任意进制的数字')
+                what_JinZhi = enter_box.askstring('输入进制', '请输入你刚刚输入的数字的进制(用阿拉伯数字)')
                 try:
                     what_JinZhi = int(what_JinZhi)
-                    outcome = int(JinZhi_Enter, what_JinZhi)
-                    box.showinfo('结果', str(outcome))
+                    result = int(num, what_JinZhi)
+                    box.showinfo('结果', str(result))
                     break
                 except ValueError:
-                    box.showerror('错误', '请确保你输入的内容是数字！')
-                    continue
-                except Exception:
-                    box.showerror('意想不到的事发生了！', '程序发生了未知错误！')
-                    break
+                    restart = box.askyesno('重新输入？', '你输入的不是数字，你想要重新输入吗？')
+                    if restart:
+                        continue
+                    else:
+                        break
     elif Home_Choice == '让你的设备蓝屏':
         box.showwarning('警告', """仅限Windows !
 这可不是开玩笑，此功能真的会让Windows 蓝屏！！！
@@ -365,18 +367,13 @@ Windows 11加了保护措施，不能蓝屏......""")
                 set_del_max_min = False
                 continue
             elif number != 'exit' and number != 'start':
-                try:
+                if number.isdecimal():
                     number = int(number)
-                except ValueError:
+                    numbers.append(number)
+                else:
                     box.showwarning('错误', '请输入整数！输入小数将去小数点及小数！')
                     set_del_max_min = False
                     continue
-                except Exception:
-                    box.showerror('意想不到的事发生了！', '未知错误。')
-                    numbers = []
-                    break
-                else:
-                    numbers.append(number)
             elif len(numbers) > 0 and number != 'exit' and number == 'start':
                 if del_max_min:
                     max_value = max(numbers)
@@ -387,7 +384,7 @@ Windows 11加了保护措施，不能蓝屏......""")
                     frequency = numbers.count(min_value)
                     for cycle in range(frequency):
                         numbers.remove(min_value)
-                    print(f'已经去除最大、小值，结果：{numbers}\n')
+                    print(f'已经去除最大、小值，去除完的结果为：{numbers}\n')
                 number_sum = sum(numbers)
                 average = number_sum / len(numbers)
                 box.showinfo('平均数', f'它们的平均数为：{average}')
@@ -564,6 +561,8 @@ BMI:{str(int(bmi))}""")
                             all_manner += 1
             print('计算成功')
             return all_manner
+
+
         box.showinfo('info', '该功能可以算出1、2、5元凑成指定钱数有几种可能。')
         compute_money(enter_box.askinteger('money', '输入钱数', minvalue=1))
         box.showinfo('result', f'结果：{all_manner}')
