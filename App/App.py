@@ -11,6 +11,9 @@ import sys
 from colorama import Fore, Back, Style
 import socket
 
+if sys.version_info.major != 3:
+    print('You only use Python3 to run this program!')
+    sys.exit(1)
 print('Loading.... It\'ll take some time......')
 normalRun = False
 try:
@@ -69,10 +72,10 @@ morse_codes = {
     "z": "--.."
 }
 if normalRun:
-    version = """NiceProgram App VERSION 2.0
+    version = """NiceProgram App VERSION 2.3
 处于NormalRun模式，自定义功能受到限制，具体内容见H:/Projects/App/Help/Helps.txt"""
 elif not normalRun:
-    version = 'NiceProgram App VERSION 2.0'
+    version = 'NiceProgram App VERSION 2.3'
 will_shutdown = False
 message = '欢迎来到App.py，请你选择一个功能'
 shutdown_time = None
