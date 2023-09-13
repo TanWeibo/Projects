@@ -72,10 +72,10 @@ morse_codes = {
     "z": "--.."
 }
 if normalRun:
-    version = """NiceProgram App VERSION 2.3
+    version = """NiceProgram App VERSION 2.3.1
 处于NormalRun模式，自定义功能受到限制，具体内容见H:/Projects/App/Help/Helps.txt"""
 elif not normalRun:
-    version = 'NiceProgram App VERSION 2.3'
+    version = 'NiceProgram App VERSION 2.3.1'
 will_shutdown = False
 message = '欢迎来到App.py，请你选择一个功能'
 shutdown_time = None
@@ -95,7 +95,7 @@ shutdown -a
                                     ['猜数字', '中英互译机', 'Ping', '石头剪刀布', '进制转换', '让你的设备蓝屏'
                                         , '摩斯密码转换器', '计算正确率', '计算平均数', 'Talk out', '恶搞', '读心术',
                                      '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表',
-                                     'BMI检测', '凑钱数', '按升/降排序数列', '定时关机', '反馈问题', '关于'])
+                                     'BMI检测', '凑钱数', '按升/降排序数列', '定时关机', '反馈问题', '更新日志', '关于'])
     if Home_Choice == '猜数字':
         scope = enter_box.askstring('输入范围', '输入范围，中间用“~”分隔')
         find_to = scope.find('~')
@@ -625,6 +625,12 @@ BMI:{str(int(bmi))}""")
     elif Home_Choice == '反馈问题':
         box.showinfo('Have any questions?', '如果您有建议或者问题，请发送邮件到：543622842@qq.com 或者 yelij\
 ing830@foxmail.com\n十分感谢您的支持！\nTanWeibo\n2023/8/18')
+    elif Home_Choice == '更新日志':
+        try:
+            update_log_file = open('H:/Projects/App/Update_Log.log', 'r')
+        except FileNotFoundError:
+            box.showwarning('不能找到文件', '无法找到文件，你可以访问我的Github(Github.co\
+m/TanWeibo/Projects/blob/main/App/Update_Log.log)下载Update_Log.log并放在App.py的目录下')
     elif Home_Choice == '关于':
         box.showinfo('关于', version)
     elif Home_Choice is None:
