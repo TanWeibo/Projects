@@ -627,10 +627,15 @@ BMI:{str(int(bmi))}""")
 ing830@foxmail.com\n十分感谢您的支持！\nTanWeibo\n2023/8/18')
     elif Home_Choice == '更新日志':
         try:
-            update_log_file = open('H:/Projects/App/Update_Log.log', 'r')
+            update_log_file = open('H:/Projects/App/Update_Log.log', 'r', encoding='utf-8')
         except FileNotFoundError:
             box.showwarning('不能找到文件', '无法找到文件，你可以访问我的Github(Github.co\
 m/TanWeibo/Projects/blob/main/App/Update_Log.log)下载Update_Log.log并放在App.py的目录下')
+        else:
+            log = update_log_file.read()
+            update_log_file.close()
+            box.showinfo('log', f"""log:
+{log}""")
     elif Home_Choice == '关于':
         box.showinfo('关于', version)
     elif Home_Choice is None:
