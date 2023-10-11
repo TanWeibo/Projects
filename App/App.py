@@ -327,7 +327,7 @@ Windows 11加了保护措施，不能蓝屏......""")
                     print(1)
                     print(Style.RESET_ALL)
                     time.sleep(1)
-                    os.system('taskkill -im svchost.exe -f')
+                    os.system('Powershell.exe wininit')
                 except KeyboardInterrupt:
                     print('紧急取消完成。' + Style.RESET_ALL)
             else:
