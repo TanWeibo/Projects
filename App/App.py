@@ -72,10 +72,10 @@ morse_codes = {
     "z": "--.."
 }
 if normalRun:
-    version = """NiceProgram App VERSION 2.3.1
+    version = """NiceProgram App VERSION 2.4
 处于NormalRun模式，自定义功能受到限制，具体内容见H:/Projects/App/Help/Helps.txt"""
 elif not normalRun:
-    version = 'NiceProgram App VERSION 2.3.1'
+    version = 'NiceProgram App VERSION 2.4'
 will_shutdown = False
 message = '欢迎来到App.py，请你选择一个功能'
 shutdown_time = None
@@ -95,7 +95,8 @@ shutdown -a
                                     ['猜数字', '中英互译机', 'Ping', '石头剪刀布', '进制转换', '让你的设备蓝屏'
                                         , '摩斯密码转换器', '计算正确率', '计算平均数', 'Talk out', '恶搞', '读心术',
                                      '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表',
-                                     'BMI检测', '凑钱数', '按升/降排序数列', '定时关机', '反馈问题', '更新日志', '关于'])
+                                     'BMI检测', '凑钱数', '按升/降排序数列', '定时关机', '反馈问题', '更新日志',
+                                     '批量创建文件', '关于'])
     if Home_Choice == '猜数字':
         scope = enter_box.askstring('输入范围', '输入范围，中间用“~”分隔')
         find_to = scope.find('~')
@@ -636,6 +637,22 @@ m/TanWeibo/Projects/blob/main/App/Update_Log.log)下载Update_Log.log并放在Ap
             update_log_file.close()
             box.showinfo('log', f"""log:
 {log}""")
+    elif Home_Choice == '批量创建文件':
+        file_type = enter_box.askstring('输入类型', '请输入你要批量创建文件的类型(txt文件直接输入txt)')
+        file_quantity = enter_box.askinteger('输入数量', '请输入你要创建文件的数量')
+        file_path = enter_box.askstring('输入路径', """请输入你要创建文件的位置(绝对路径)
+Windows中，所有"\\"都替换为"/"。""")
+        file_name = enter_box.askstring('输入文件名', '请输入你要创建文件的名字\n你的文件名+序列+后缀名')
+        ok = easygui.buttonbox(f"""这样对吗？
+文件类型：{file_type}
+创建文件数量：{file_quantity}
+创建文件路径：{file_path}
+创建文件名：{file_name}""", '确认', ['是的', '不是，我要重新输入'])
+        if ok == '是的':
+            os.chdir(file_path)
+            for num in range(file_quantity):
+                filename = f'{file_name}{num}.{file_type}'
+                os.system(f'type nul>{filename}')
     elif Home_Choice == '关于':
         box.showinfo('关于', version)
     elif Home_Choice is None:
