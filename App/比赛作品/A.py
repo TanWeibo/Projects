@@ -2,10 +2,8 @@ import tkinter.messagebox as box
 import tkinter.simpledialog as enter_box
 import easygui
 import random
-import requests
 import os
 from pythonping import ping
-from datetime import datetime
 import time
 import sys
 from colorama import Fore, Back, Style
@@ -16,31 +14,6 @@ if sys.version_info.major != 3:
     sys.exit(1)
 print('Loading.... It\'ll take some time......')
 normalRun = False
-try:
-    file_sleepTime = open('H:/Projects/App/Setting Files/End_Sleep_Time.App-Setting', 'r')
-    end_sleep_time = int(file_sleepTime.read())
-    file_sleepTime.close()
-except ValueError:
-    file_sleepTime = open('H:/Projects/App/Setting Files/End_Sleep_Time.App-Setting', 'w')
-    print('请稍后，程序正在恢复文件...')
-    file_sleepTime.write('5')
-    end_sleep_time = 5
-    file_sleepTime.close()
-except FileNotFoundError:
-    if len(sys.argv) != 2:
-        box.showwarning('警告', '找不到设置文件，请按H:/Projects/App/Help/Helps.txt解决！')
-        sys.exit(1)
-    elif len(sys.argv) == 2:
-        if sys.argv[1].lower() == 'normalrun':
-            print('你现在处于NormalRun模式')
-            end_sleep_time = 5
-            normalRun = True
-        else:
-            print('无效参数！')
-            end_sleep_time = 5
-except Exception:
-    print('未知错误，end_sleep_time将会=5')
-    end_sleep_time = 5
 
 start_time = time.perf_counter()
 morse_codes = {
@@ -71,11 +44,7 @@ morse_codes = {
     "y": "-.--",
     "z": "--.."
 }
-if normalRun:
-    version = """NiceProgram App VERSION 2.4
-处于NormalRun模式，自定义功能受到限制，具体内容见H:/Projects/App/Help/Helps.txt"""
-elif not normalRun:
-    version = 'NiceProgram App VERSION 2.4'
+version = 'NiceProgram App VERSION 2.4'
 will_shutdown = False
 message = '欢迎来到App.py，请你选择一个功能'
 shutdown_time = None
@@ -92,11 +61,9 @@ shutdown -a
     else:
         message = '欢迎来到App.py，请你选择一个功能'
     Home_Choice = easygui.buttonbox(message, '主页',
-                                    ['猜数字', '中英互译机', 'Ping', '石头剪刀布', '进制转换', '让你的设备蓝屏'
-                                        , '摩斯密码转换器', '计算正确率', '计算平均数', 'Talk out', '恶搞', '读心术',
-                                     '计算鸡兔同笼问题', 'Collatz数列', '激活Windows(需要管理员权限)', '九九乘法表',
-                                     'BMI检测', '凑钱数', '按升/降排序数列', '定时关机', '反馈问题', '更新日志',
-                                     '批量创建文件', '关于'])
+                                    ['计算鸡兔同笼问题', '九九乘法表', '按升/降排序数列'
+                                    , '进制转换', '计算正确率', '计算平均数',  '凑钱数', '摩斯密码转换器', '读心术', '猜数字'
+                                    , '石头剪刀布', 'BMI检测', '批量创建文件', 'Ping', '激活Windows(需要管理员权限)', '定时关机', '关于'])
     if Home_Choice == '猜数字':
         scope = enter_box.askstring('输入范围', '输入范围，中间用“~”分隔')
         find_to = scope.find('~')
@@ -110,9 +77,8 @@ shutdown -a
             Error_frequency = 0
             while True:
                 Guess_numbers_Enter = enter_box.askstring('输入', f"""计算机已经创建了{start}~{end}中的数字，尽你的能力猜到它！
-输入exit退出
-输入empty清空所有数据""")
-                if Guess_numbers_Enter != 'exit' and Guess_numbers_Enter != 'empty':
+输入exit退出""")
+                if Guess_numbers_Enter != 'exit':
                     if not Guess_numbers_Enter.isdecimal():
                         box.showerror('数值错误', '你输入的不是数字')
                         continue
@@ -120,24 +86,7 @@ shutdown -a
                     if start <= Guess_numbers_Enter <= end:
                         if Guess_numbers_Enter == right:
                             box.showinfo('猜对了！', f'恭喜你猜对了数字：{right}，你一共用了{Error_frequency}次。')
-                            try:
-                                file_guessNumber = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'a')
-                            except FileNotFoundError:
-                                box.showerror('找不到文件', 'App.py找不到指定文件：H:/Projects/App/GuessNumbe\
-rs/GuessNumbers.txt，所以导致无法写入文件')
-                                break
-                            except Exception:
-                                box.showerror('错误', '进行文件写入时发生了未知错误')
-                                break
-                            else:
-                                file_guessNumber.write('\n')
-                                file_guessNumber.write(f"""错误次数：{str(Error_frequency)}
-正确数字：{right}
-日期：{datetime.today()}
-范围：{str(start)}~{str(end)}
-------""")
-                                file_guessNumber.close()
-                                break
+                            break
                         elif Guess_numbers_Enter > right:
                             Error_frequency += 1
                             box.showinfo('回答错误', '太大啦！')
@@ -150,27 +99,6 @@ rs/GuessNumbers.txt，所以导致无法写入文件')
                         continue
                 elif Guess_numbers_Enter == 'exit':
                     break
-                elif Guess_numbers_Enter == 'empty':
-                    file_sleepTime = open('H:/Projects/App/GuessNumbers/GuessNumbers.txt', 'w')
-                    file_sleepTime.write('GuessNumber FREQUENCY')
-                    file_sleepTime.close()
-                    box.showinfo('成功', '清除成功！')
-                    break
-    elif Home_Choice == '中英互译机':
-        string = enter_box.askstring('翻译', '输入翻译内容')
-        data = {
-            'doctype': 'json',
-            'type': 'AUTO',
-            'i': string
-        }
-        try:
-            translate_url = 'https://cn.bing.com/translator/?h_text=msn_ctxt&setlang=zh-cn'
-            r = requests.get(translate_url, params=data)
-            result = r.json()
-            translate_result = result['translateResult'][0][0]["tgt"]
-            box.showinfo('翻译结果', translate_result)
-        except Exception:
-            box.showerror('错误', '无法翻译，可能是因为在当前状态下无Internet连接，请连接Internet后再试')
     elif Home_Choice == 'Ping':
         Ping_Choice = easygui.buttonbox('选择方式', 'Ping',
                                         ['使用系统Ping(仅限Windows，其它系统使用会报错)', '使用Python Ping'])
@@ -255,30 +183,7 @@ rs/GuessNumbers.txt，所以导致无法写入文件')
                     tie += 1
                     continue
             elif Your_Choice is None:
-                if win == 0 and lose == 0 and tie == 0:
-                    break
-                else:
-                    if win > lose:
-                        state = '赢'
-                    elif win == lose:
-                        state = '平局'
-                    elif win < lose:
-                        state = '输'
-                    try:
-                        GuessFist_file = open('H:/Projects/App/GuessFist/GuessFist.txt', 'a')
-                    except FileNotFoundError:
-                        box.showerror('保存失败', '没有找到文件。')
-                    else:
-                        GuessFist_file.write('\n')
-                        GuessFist_file.write(f"""赢:{win}
-输:{lose}
-平局:{tie}
-综合:{state}
-时间：{datetime.today()}""")
-                        GuessFist_file.write('\n----------------')
-                    finally:
-                        GuessFist_file.close()
-                        break
+                break
     elif Home_Choice == '进制转换':
         JinZhi_Choice = easygui.buttonbox('选择一个选项', '进制转换', ['十进制转二进制', '几进制转十进制'])
         if JinZhi_Choice == '十进制转二进制':
@@ -311,30 +216,6 @@ rs/GuessNumbers.txt，所以导致无法写入文件')
                         continue
                     else:
                         break
-    elif Home_Choice == '让你的设备蓝屏':
-        box.showwarning('警告', """仅限Windows !
-这可不是开玩笑，此功能真的会让Windows 蓝屏！！！
-Windows 11加了保护措施，不能蓝屏......""")
-        continue_choice = box.askyesno('继续？', '真的要继续吗？')
-        if continue_choice:
-            continue_enter = enter_box.askstring('验证', """如需继续，请输入“yes”
-输入yes后如需取消，请按下Ctrl(Command)+C。""")
-            if continue_enter == 'yes':
-                try:
-                    print(Back.RED + Fore.GREEN + '3')
-                    time.sleep(1)
-                    print(2)
-                    time.sleep(1)
-                    print(1)
-                    print(Style.RESET_ALL)
-                    time.sleep(1)
-                    os.system('Powershell.exe wininit')
-                except KeyboardInterrupt:
-                    print('紧急取消完成。' + Style.RESET_ALL)
-            else:
-                pass
-        else:
-            pass
     elif Home_Choice == '摩斯密码转换器':
         while True:
             letter_enter = enter_box.askstring('Enter', '''输入要转换成摩斯密码的字母，只能输入小写！否则程序将不返回大写字母、特殊符号
@@ -394,38 +275,6 @@ Windows 11加了保护措施，不能蓝屏......""")
                 box.showinfo('平均数', f'它们的平均数为：{average}')
                 numbers = []
                 set_del_max_min = True
-    elif Home_Choice == 'Talk out':
-        help_words = """If you are happy,you can enter "EXIT" to exit.
-Enter "CLEAN" to clean the enter area.
-Enter "HELP" to print the help words."""
-        print(f"""Talk out:
-{help_words}""")
-        while True:
-            talk_out = input()
-            if talk_out == 'EXIT':
-                os.system('cls')
-                yes = input('Do you want exit?(Enter "yes" or "no".)')
-                if yes == 'yes':
-                    os.system('cls')
-                    break
-                else:
-                    os.system('cls')
-                    continue
-            elif talk_out == 'CLEAN':
-                os.system('cls')
-            elif talk_out == 'HELP':
-                print(help_words)
-    elif Home_Choice == '恶搞':
-        os.system('taskkill -im explorer.exe -f')
-        os.system('Shutdown -s -t 60 -c 你的电脑将会在60秒后关机，哈哈哈！想恢复就点击确定，在弹出的窗口中输入密码！！！')
-        while True:
-            password = enter_box.askstring('Password', '快输密码！')
-            if password == 'Twb20131023':
-                os.system('Shutdown -a')
-                os.system('Explorer.exe')
-                break
-            else:
-                box.showerror('错误', '密码错误！')
     elif Home_Choice == '读心术':
         box.showinfo('欢迎', '请你想一个1~31的数字，开始吧！！！')
         right = []
@@ -455,77 +304,24 @@ Enter "HELP" to print the help words."""
         tmp_result = "你想的数是:" + str(result)
         box.showinfo('结果', tmp_result)
     elif Home_Choice == '计算鸡兔同笼问题':
-        NORMAL, CUSTOMIZE = '普通(鸡2条腿、兔4条腿)', '自定义，如自行车与三轮车'
-        mode = easygui.buttonbox('请选择模式', '鸡兔同笼', [NORMAL, CUSTOMIZE])
         def main(head, feet):
-            if mode == NORMAL:
-                try:
-                    chickens = ((head * 4) - feet) / (4-2)
-                    rabbits = head - chickens
-                    if (chickens < 0 or chickens > feet) or (rabbits < 0 or rabbits > feet):
-                        box.showerror('错误！', '该问题无解。')
-                        return None
-                    box.showinfo('计算结果', f'鸡有{int(chickens)}只，兔有{int(rabbits)}只')
-                except ZeroDivisionError:
-                    box.showerror('错误！', '该问题无解。')
-                except Exception:
-                    box.showerror('错误！', '该问题无解。')
-            elif mode == CUSTOMIZE:
-                things = {}
-                a_name = enter_box.askstring('鸡兔同笼', '输入a物品的名字')
-                a_feet = enter_box.askinteger('鸡兔同笼', '输入a物品的脚数(如轮子等)鸡兔同笼')
-                b_name = enter_box.askstring('鸡兔同笼', '输入b物品的名字')
-                b_feet = enter_box.askinteger('鸡兔同笼输入b物品的脚数(如轮子等)', '输入b物品的脚数(如轮子等)')
-                head_sum = enter_box.askinteger('请输入头的总和鸡兔同笼', '请输入头的总和')
-                feet_sum = a_feet + b_feet
-                things = {a_name: a_feet, b_name: b_feet}
-                try:
-                    if a_feet > b_feet:
-                        a = ((head_sum * b_feet) - feet_sum) / (a_feet - b_feet)
-                    elif b_feet > a_feet:
-                        a = ((head_sum * b_feet) - feet_sum) / (b_feet - a_feet)
-                    elif a_feet == b_feet:
-                        box.showerror('错误！', '该问题无解。')
-                        return None
-                    b = head_sum - a
-                    if (a < 0 or a > feet_sum) or (b < 0 or b > feet_sum):
-                        box.showerror('错误！', '该问题无解。')
-                        return None
-                    box.showinfo('计算结果', f'{things[0]}有{int(a)}只，{things[1]}有{int(b)}只')
-                except ZeroDivisionError:
-                    box.showerror('错误！', '该问题无解。')
-        if mode == NORMAL:
-            enter_head = enter_box.askinteger('鸡兔同笼', '请输入头的数量')
-            enter_feet = enter_box.askinteger('鸡兔同笼', '请输入脚的数量', minvalue=enter_head)
-            main(enter_head,  enter_feet)
-        elif mode == CUSTOMIZE:
-            main(None, None)
-    elif Home_Choice == 'Collatz数列':
-        def collatz(num):
-            print('-----计算开始-----')
-            print(f'初始值：{num}')
-            while True:
-                if num != 1:
-                    if num % 2 == 0:
-                        if num == 1:
-                            sys.exit(7)
-                        else:
-                            num = num // 2
-                            print(num)
-                    elif num % 2 == 1:
-                        if num == 1:
-                            sys.exit(9)
-                        else:
-                            num = 3 * num + 1
-                            print(num)
+            chickens = int((4 * head - feet) / 2)
+            try:
+                if head != 0 and (4 * head - feet) % (chickens * 2) == 0:
+                    rabbits = int(head - chickens)
+                    if chickens < 0 or rabbits < 0:
+                        box.showerror('无解', f'{head}个头，{feet}只脚的题目无解')
+                    else:
+                        box.showinfo('结果', f'鸡有{str(chickens)}只，兔子有{str(rabbits)}只')
                 else:
-                    print('-----计算结束-----')
-                    break
+                    box.showerror('无解', f'{head}个头，{feet}只脚的题目无解')
+            except ZeroDivisionError:
+                box.showerror('无解', f'{head}个头，{feet}只脚的题目无解')
 
 
-        enter_num = enter_box.askinteger('输入', """输入一个数字。程序将会以Collatz数列计算的方式计算该数字。""",
-                                         minvalue=1)
-        collatz(enter_num)
+        enter_head = enter_box.askinteger('输入', '头的数量', minvalue=1)
+        enter_feet = enter_box.askinteger('输入', '脚的数量', minvalue=enter_head)
+        main(enter_head, enter_feet)
     elif Home_Choice == '激活Windows(需要管理员权限)':
         box.showwarning('注意事项', """按下确定后几秒钟会弹出一个窗口。
 在那个窗口中：
@@ -542,28 +338,17 @@ Enter "HELP" to print the help words."""
                 print(f'{j}x{i}={i * j}', end='\t')
             print()
     elif Home_Choice == 'BMI检测':
-        bmiFile = open('H:/Projects/App/BMI/BMI Log.log', 'a')
         high = enter_box.askfloat('输入', '输入身高(m)', minvalue=0.1, maxvalue=2.0)
         weight = enter_box.askfloat('输入', '输入体重(kg)', minvalue=2.5, maxvalue=640.0)
         bmi = weight / (high ** 2)
-        bmiFile.write(f"""\n时间:{datetime.today()}
-你的身高：{high}m
-你的体重：{weight}kg
-BMI:{str(int(bmi))}""")
         if bmi <= 18.4:
             box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：你的体型偏瘦，要注意营养哦~')
-            bmiFile.write('\n温馨提示：你的体型偏瘦，要注意营养哦~')
         elif 18.4 < bmi <= 23.9:
             box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：标准体型，继续保持哦~')
-            bmiFile.write('\n温馨提示：标准体型，继续保持哦~')
         elif 24 <= bmi <= 27.9:
             box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：你的体型过胖，要注意身体哦~')
-            bmiFile.write('\n温馨提示：你的体型过胖，要注意身体哦~')
         elif bmi >= 28:
             box.showinfo('BMI', f'你的BMI值：{bmi} 温馨提示：你的体型肥胖，要注意饮食哦~')
-            bmiFile.write('\n温馨提示：你的体型肥胖，要注意饮食哦~')
-        bmiFile.write('\n---------')
-        bmiFile.close()
     elif Home_Choice == '凑钱数':
         all_manner = 0
 
@@ -639,20 +424,6 @@ BMI:{str(int(bmi))}""")
         elif shutdown_choice == '关闭在主页中的提醒':
             will_shutdown = False
             box.showinfo('ok', '取消成功！')
-    elif Home_Choice == '反馈问题':
-        box.showinfo('Have any questions?', '如果您有建议或者问题，请发送邮件到：543622842@qq.com 或者 yelij\
-ing830@foxmail.com\n十分感谢您的支持！\nTanWeibo\n2023/8/18')
-    elif Home_Choice == '更新日志':
-        try:
-            update_log_file = open('H:/Projects/App/Update_Log.log', 'r', encoding='utf-8')
-        except FileNotFoundError:
-            box.showwarning('不能找到文件', '无法找到文件，你可以访问我的Github(Github.co\
-m/TanWeibo/Projects/blob/main/App/Update_Log.log)下载Update_Log.log并放在App.py的目录下')
-        else:
-            log = update_log_file.read()
-            update_log_file.close()
-            box.showinfo('log', f"""log:
-{log}""")
     elif Home_Choice == '批量创建文件':
         file_type = enter_box.askstring('输入类型', '请输入你要批量创建文件的类型(txt文件直接输入txt)')
         file_quantity = enter_box.askinteger('输入数量', '请输入你要创建文件的数量')
@@ -674,5 +445,5 @@ Windows中，所有"\\"都替换为"/"。""")
     elif Home_Choice is None:
         end_time = time.perf_counter()
         print(f'本次运行时间:{str(end_time - start_time)}秒')
-        time.sleep(end_sleep_time)
+        time.sleep(2)
         break

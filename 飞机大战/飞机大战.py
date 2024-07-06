@@ -1,7 +1,6 @@
 ﻿import random
 import pygame
 import tkinter.messagebox as message
-import os
 
 try:
     file = open('H:/Projects/飞机大战/plug-in.plug-file', 'r')
