@@ -457,10 +457,18 @@ Enter "HELP" to print the help words."""
     elif Home_Choice == '计算鸡兔同笼问题':
         NORMAL, CUSTOMIZE = '普通(鸡2条腿、兔4条腿)', '自定义，如自行车与三轮车'
         mode = easygui.buttonbox('请选择模式', '鸡兔同笼', [NORMAL, CUSTOMIZE])
+        THINGS = {}
+
+        def create_thing_dict(a_name, a_feet, b_name, b_feet):
+            global THINGS
+            THINGS = {a_name: a_feet, b_name: b_feet}
+            return THINGS
+
+
         def main(head, feet):
             if mode == NORMAL:
                 try:
-                    chickens = ((head * 4) - feet) / (4-2)
+                    chickens = ((head * 4) - feet) / (4 - 2)
                     rabbits = head - chickens
                     if (chickens < 0 or chickens > feet) or (rabbits < 0 or rabbits > feet):
                         box.showerror('错误！', '该问题无解。')
@@ -468,36 +476,44 @@ Enter "HELP" to print the help words."""
                     box.showinfo('计算结果', f'鸡有{int(chickens)}只，兔有{int(rabbits)}只')
                 except ZeroDivisionError:
                     box.showerror('错误！', '该问题无解。')
+                    return None
                 except Exception:
-                    box.showerror('错误！', '该问题无解。')
+                    box.showerror('错误！', '程序发生未知错误！你可以联系atwbspare@163.com或github.com\
+                        /TanWeibo/Projects 反馈问题。')
+                    return None
             elif mode == CUSTOMIZE:
-                things = {}
-                a_name = enter_box.askstring('鸡兔同笼', '输入a物品的名字')
-                a_feet = enter_box.askinteger('鸡兔同笼', '输入a物品的脚数(如轮子等)鸡兔同笼')
-                b_name = enter_box.askstring('鸡兔同笼', '输入b物品的名字')
-                b_feet = enter_box.askinteger('鸡兔同笼输入b物品的脚数(如轮子等)', '输入b物品的脚数(如轮子等)')
-                head_sum = enter_box.askinteger('请输入头的总和鸡兔同笼', '请输入头的总和')
-                feet_sum = a_feet + b_feet
-                things = {a_name: a_feet, b_name: b_feet}
-                try:
-                    if a_feet > b_feet:
-                        a = ((head_sum * b_feet) - feet_sum) / (a_feet - b_feet)
-                    elif b_feet > a_feet:
-                        a = ((head_sum * b_feet) - feet_sum) / (b_feet - a_feet)
-                    elif a_feet == b_feet:
+                bugwarning = box.askyesno('BUG!!!!', '请注意！当前自定义功能有严重bug。继续运行吗？')
+                if bugwarning:
+                    a_name = enter_box.askstring('鸡兔同笼', '请输入a物品的名字')
+                    a_feet = enter_box.askinteger('鸡兔同笼', '请输入a物品的脚数')
+                    b_name = enter_box.askstring('鸡兔同笼', '请输入b物品的名字')
+                    b_feet = enter_box.askinteger('鸡兔同笼', '请输入b物品的脚数')
+                    THINGS = create_thing_dict(a_name, a_feet, b_name, b_feet)
+                    feet_sum = a_feet + b_feet
+                    head_sum = enter_box.askinteger('鸡兔同笼', '请输入头数总和')
+
+                    try:
+                        a_heads = ((b_feet * head_sum) - feet_sum) / (b_feet - a_feet)
+                        b_heads = head_sum - a_heads
+                        if (a_heads < 0 or a_heads > feet_sum) or (b_heads < 0 or b_heads > 0):
+                            box.showerror('错误！', '该问题无解。')
+                            return None
+                        box.showinfo('鸡兔同笼-结果', f'{a_name}有{a_heads}个(只)、{b_name}有{b_heads}个(只)')
+                    except ZeroDivisionError:
                         box.showerror('错误！', '该问题无解。')
                         return None
-                    b = head_sum - a
-                    if (a < 0 or a > feet_sum) or (b < 0 or b > feet_sum):
-                        box.showerror('错误！', '该问题无解。')
+                    except Exception:
+                        box.showerror('错误！', '程序发生未知错误！你可以联系atwbspare@163.com或github.com\
+                            /TanWeibo/Projects 反馈问题。')
                         return None
-                    box.showinfo('计算结果', f'{things[0]}有{int(a)}只，{things[1]}有{int(b)}只')
-                except ZeroDivisionError:
-                    box.showerror('错误！', '该问题无解。')
+                else:
+                    return None
+
+
         if mode == NORMAL:
             enter_head = enter_box.askinteger('鸡兔同笼', '请输入头的数量')
             enter_feet = enter_box.askinteger('鸡兔同笼', '请输入脚的数量', minvalue=enter_head)
-            main(enter_head,  enter_feet)
+            main(enter_head, enter_feet)
         elif mode == CUSTOMIZE:
             main(None, None)
     elif Home_Choice == 'Collatz数列':
