@@ -459,11 +459,6 @@ Enter "HELP" to print the help words."""
         mode = easygui.buttonbox('请选择模式', '鸡兔同笼', [NORMAL, CUSTOMIZE])
         THINGS = {}
 
-        def create_thing_dict(a_name, a_feet, b_name, b_feet):
-            global THINGS
-            THINGS = {a_name: a_feet, b_name: b_feet}
-            return THINGS
-
 
         def main(head, feet):
             if mode == NORMAL:
@@ -488,7 +483,6 @@ Enter "HELP" to print the help words."""
                     a_feet = enter_box.askinteger('鸡兔同笼', '请输入a物品的脚数')
                     b_name = enter_box.askstring('鸡兔同笼', '请输入b物品的名字')
                     b_feet = enter_box.askinteger('鸡兔同笼', '请输入b物品的脚数')
-                    THINGS = create_thing_dict(a_name, a_feet, b_name, b_feet)
                     feet_sum = a_feet + b_feet
                     head_sum = enter_box.askinteger('鸡兔同笼', '请输入头数总和')
 
